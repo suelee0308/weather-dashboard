@@ -1,4 +1,4 @@
-  var userSearch = "dallas"; //document.getElementById('userInput');
+var userSearch = "dallas"; //document.getElementById('userInput');
 var cityName;
 // this URL responds with 5/3 day forecast
 
@@ -30,9 +30,6 @@ var cityName;
             .then (function (data) {
                     var cityLat;
                     var cityLon;
-                    var temp5;
-                    var wind5;
-                    var humidity5;
                 console.log(data)
                 console.log(data.city.coord)
                 // extract lat/long coordinates from data
@@ -41,17 +38,27 @@ var cityName;
                 console.log(cityLat);
                 console.log(typeof cityLat);
                 console.log(cityLon);
-                    var requestWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&units=imperial&exclude=minutely,hourly,daily,alerts&appid=deb2d4595b0266d3dd7a3a63088c406d`;
-                    console.log(requestWeather); 
+
                 
                 // need to generate html dynamically in for loop and put in data
-                for (i = 5; i < data.length; i+8) {
-                    temp5 = data.list[i].main.temp; //instead of temp5, grab html element it is going into!!!!
-                    wind5 = data.list[i].wind.speed;
-                    humidity5 = data.list[i].main.humidity;
+                for (i = 5; i < data.list.length; i+=8) {
+                    var day = moment(data.list[i].dt_txt).format('ddd, M/D/YYYY');
+                    var temp5 = data.list[i].main.temp; //instead of temp5, grab html element it is going into!!!!
+                    var wind5 = data.list[i].wind.speed;
+                    var humidity5 = data.list[i].main.humidity;
+                    var iconURL = "http://openweathermap.org/img/w/" + data.list[i].icon + ".png"
+                    console.log(day);
                     console.log(temp5);
                 }
 
+                currentWeather(cityLat, cityLon)
+            })
+
+            function currentWeather(cityLat, cityLon) {
+                    var requestWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&units=imperial&exclude=minutely,hourly,daily,alerts&appid=deb2d4595b0266d3dd7a3a63088c406d`;
+                    console.log(requestWeather); 
+
+                // second fetch with above-complete api url
                 fetch (requestWeather)
                 
                 .then (function (response){
@@ -60,23 +67,22 @@ var cityName;
                         return response.json();
                     }
                 })
-            .then (function(data)  {
-                console.log(data);
+                .then (function(data)  {
+                    console.log(data);
 
-                var temp;
-                var wind;
-                var humidity;
-                var uvIndex;
+                    var temp;
+                    var wind;
+                    var humidity;
+                    var uvIndex;
 
-                temp = data.current.temp;
-                wind = data.current.wind_speed;
-                humidity = data.current.humidity;
-                uvIndex = data.current.uvi;
-                console.log(temp);
- 
-            })
+                    temp = data.current.temp;
+                    wind = data.current.wind_speed;
+                    humidity = data.current.humidity;
+                    uvIndex = data.current.uvi;
+                    console.log(temp);
 
-        })
+                })
+            }
 
 // }
 
