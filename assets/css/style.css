@@ -6,6 +6,37 @@
     text-align: center;
 }
 
+.inputArea {
+    width: 100%;
+    padding: 3%;
+    margin: 5px 0;
+    font-size: 1.2rem;
+    border: 2px solid black;
+    border-radius: 5px;
+  }
+
+.btn {
+    font-size: 1.3rem;
+    text-decoration: none;
+    padding: 6px 5px;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .btn:hover {
+    color: var(--primary);
+    background-color: var(--tertiary);
+    transform: translate(0, 0);
+    box-shadow: 2px 2px var(--dark);
+  }
+
+  .mainBtn {
+      margin-bottom: 40px;
+  }
+
 .currentWeather {
     border: solid black 2px;
 }
