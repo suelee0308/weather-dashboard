@@ -6,7 +6,19 @@
     text-align: center;
 }
 
-.cards5 {
+.currentWeather {
+    border: solid black 2px;
+}
+
+.inlineBlock {
+    display: inline-block;
+}
+
+.forecastCards {
     background-color: rgb(24, 38, 74);
     color: white;
+}
+
+img {
+    max-width: 80px;
 }
