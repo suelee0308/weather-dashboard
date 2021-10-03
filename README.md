@@ -7,6 +7,9 @@ This application allows users to plan for a trip according to the weather outloo
 Classmate Ethan helped with starting off HTML, converting the temperature to imperial, and overall talking out my logic and double checking my functions.  
 Classmate Todd helped add degree character, adding the icon images.
 
+## Future Development
+5 day forecast API call responds with different data times to begin the array. Doesn't change functionality but does not give user the accurate high of the day.
+
 ## Links:
 - GitHub Repo:https://github.com/suelee0308/weather-dashboard
 - Deployed webpage:https://suelee0308.github.io/weather-dashboard/
