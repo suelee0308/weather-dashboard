@@ -7,6 +7,7 @@ var search = $(".btn");
 // add event listener for search button
 search.on("click", function(event) {
     event.preventDefault();
+    // take input value to create city's name variable to pass to 5 day forecast function
     var cityName = $(".inputArea").val();
     console.log(cityName);
     getWeather(cityName);
@@ -78,10 +79,10 @@ function getWeather(cityName) {
                     forecastContainer.append(forecastCards);
 
                 }
-
+                // pass lat and long to get current weather in separate function
                 currentWeather(cityLat, cityLon)
             })
-
+            // create URL for one call with lat and long
             function currentWeather(cityLat, cityLon) {
                     var requestWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&units=imperial&exclude=minutely,hourly,daily,alerts&appid=deb2d4595b0266d3dd7a3a63088c406d`;
                     console.log(requestWeather); 
@@ -97,14 +98,16 @@ function getWeather(cityName) {
                 })
                 .then (function(data)  {
                     console.log(data);
-
+                    // api call variables
                     var currentTemp = data.current.temp;
                     var currentWind = data.current.wind_speed;
                     var currentHumidity = data.current.humidity;
                     var currentUvIndex = data.current.uvi;
                     var currentDate = data.current.dt;
+                    var iconURL = "http://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png"
                     console.log(currentTemp);
 
+                    // grab all html elements
                     var todaysDate = moment(currentDate).format(' ' + '(ddd, M/D/YYYY)');
                     var temp = $(".temp");
                     var wind = $(".wind");
@@ -112,13 +115,18 @@ function getWeather(cityName) {
                     var uvIndex = $(".uvIndex");
                     var uv = $(".uv");
                     var header = $("#city");
+                    var img = $("<img class ='currentImg'/>");
+                    img.attr("src", iconURL);
 
+                    // add text and append date and icon
                     temp.text("Temp: " + currentTemp + String.fromCharCode(176) + "F");
                     wind.text("Wind: " + currentWind + "MPH");
                     humidity.text("Humidity: " + currentHumidity + "%");
                     uvIndex.text("UV Index: ");
-                    uv.text(currentUvIndex);
+                    uv.text(currentUvIndex); //separate uv text to only color the background of the index
                     header.append(todaysDate);
+                    header.append(img);
+
 
                     // add if/else for color of uv number)
                     if (currentUvIndex <=3) {

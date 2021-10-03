@@ -10,6 +10,9 @@
     border: solid black 2px;
 }
 
+.inline {
+    display: inline;
+}
 .inlineBlock {
     display: inline-block;
 }
@@ -20,5 +23,11 @@
 }
 
 img {
-    max-width: 80px;
+    max-width: 75px;
+}
+
+.currentImg {
+    width: 100px;
+    background-color: rgb(71, 94, 184);
+    border-radius: 8px;
 }
