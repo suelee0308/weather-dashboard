@@ -1,36 +1,37 @@
-var currentContainer = $(".currentContainer");
-var currentWeather = $("currentWeather");
-var forecastContainer = $(".card-deck");
-var currentContainer = $(".currentContainer");
-var search = $(".btn");
-
-// add event listener for search button
-search.on("click", function(event) {
-    event.preventDefault();
-    // take input value to create city's name variable to pass to 5 day forecast function
-    var cityName = $(".inputArea").val();
-    console.log(cityName);
-
+// $(document).ready(function(){
+    var currentContainer = $(".currentContainer");
+    var currentWeather = $("currentWeather");
+    var forecastContainer = $(".card-deck");
+    var search = $(".btn");
     // need array to store all cities searched
-    var citiesSearched = [];
-    citiesSearched.push(cityName);
-    console.log(citiesSearched);
-    // convert object to JSON string
-    const jsonCityArr = JSON.stringify(citiesSearched);
-    // save to local storage
-    localStorage.setItem("city", jsonCityArr);
-    // // get string from local storage
-    // const strCity = localStorage.getItem("city");
-    // // convert string to valid object
-    // const parsedCity = JSON.parse(strCity);
-    // console.log(parsedCity);
+    var searchHistory = [];
 
-    // need to add city name to buttons
-    var searchedBtn = $("<button class='btn btn-primary' type='button'>Search</button>");
-    searchedBtn.text(citiesSearched)
+    // add event listener for search button
+    search.on("click", function(event) {
+        event.preventDefault();
+        // take input value to create city's name variable to pass to 5 day forecast function
+        var cityName = $(".inputArea").val();
+        console.log(cityName);
 
-    getWeather(cityName);
-});
+        // need to add city name to buttons
+        var searchedBtn = $("<button class='btn btn-primary' type='button'>Search</button>");
+        searchedBtn.click(function(event){
+            event.preventDefault();
+        })
+
+        searchHistory.push(cityName);
+        console.log(cityName);
+        // convert object to JSON string
+        const jsonCityArr = JSON.stringify(searchHistory);
+        // save to local storage
+        localStorage.setItem("city", jsonCityArr);
+        searchedBtn.text(cityName);
+        getWeather(cityName);
+    });
+
+    
+
+// });
 
 function getWeather(cityName) {
         var request5Day = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=deb2d4595b0266d3dd7a3a63088c406d`;
@@ -157,7 +158,21 @@ function getWeather(cityName) {
 
                 })
             }
-            
 
+            clearContent();
+            // getHistory();
 }
 
+function clearContent(){
+    $(".card-deck").html("");
+}
+
+// function getHistory() {
+//     if(localStorage.getItem("city")) {
+//         // get string from local storage
+//         searchHistory = JSON.parse(localStorage.getItem("city"));
+//         console.log(searchHistory);
+
+
+//     }
+// }
