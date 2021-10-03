@@ -160,19 +160,40 @@ function getWeather(cityName) {
             }
 
             clearContent();
-            // getHistory();
+            getHistory();
 }
 
 function clearContent(){
     $(".card-deck").html("");
 }
 
-// function getHistory() {
-//     if(localStorage.getItem("city")) {
-//         // get string from local storage
-//         searchHistory = JSON.parse(localStorage.getItem("city"));
-//         console.log(searchHistory);
+function getHistory() {
+    var searchHistoryDiv = $("#historyBtns");
+    searchHistoryDiv.html("");
 
+    if(localStorage.getItem("city")) {
+        // get string from local storage
+        searchHistory = JSON.parse(localStorage.getItem("city"));
+        console.log(searchHistory);
 
-//     }
-// }
+        
+        // for loop to create buttons of history of city searches
+        for (var i = 0; i < searchHistory.length; i++) {
+            var newBtns = $("<button class='btn btn-primary' type='button'>Search</button>")
+            console.log(newBtns);
+            newBtns.text(searchHistory[i]);
+            searchHistoryDiv.append(newBtns);
+           
+            newBtns.click(function(event) {
+                event.preventDefault();
+                var searchedCity = $(event.target);
+                var prevCity = searchedCity.text();
+                console.log(prevCity);
+                getWeather(prevCity);
+            
+            })
+
+        }
+
+    }
+}
