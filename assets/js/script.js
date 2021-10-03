@@ -1,37 +1,35 @@
-// $(document).ready(function(){
-    var currentContainer = $(".currentContainer");
-    var currentWeather = $("currentWeather");
-    var forecastContainer = $(".card-deck");
-    var search = $(".btn");
-    // need array to store all cities searched
-    var searchHistory = [];
+console.log(moment().format("M/D/YYYY"));
 
-    // add event listener for search button
-    search.on("click", function(event) {
-        event.preventDefault();
-        // take input value to create city's name variable to pass to 5 day forecast function
-        var cityName = $(".inputArea").val();
-        console.log(cityName);
 
-        // need to add city name to buttons
-        var searchedBtn = $("<button class='btn btn-primary' type='button'>Search</button>");
-        searchedBtn.click(function(event){
+var currentContainer = $(".currentContainer");
+var currentWeather = $("currentWeather");
+var forecastContainer = $(".card-deck");
+var search = $(".btn");
+// need array to store all cities searched
+var searchHistory = [];
+
+// add event listener for search button
+search.on("click", function(event) {
+    event.preventDefault();
+    // take input value to create city's name variable to pass to 5 day forecast function
+    var cityName = $(".inputArea").val();
+    console.log(cityName);
+
+    // need to add city name to buttons
+    var searchedBtn = $("<button class='btn btn-primary' type='button'>Search</button>");
+    searchedBtn.click(function(event){
             event.preventDefault();
-        })
+    })
 
-        searchHistory.push(cityName);
-        console.log(cityName);
-        // convert object to JSON string
-        const jsonCityArr = JSON.stringify(searchHistory);
-        // save to local storage
-        localStorage.setItem("city", jsonCityArr);
-        searchedBtn.text(cityName);
-        getWeather(cityName);
-    });
-
-    
-
-// });
+    searchHistory.push(cityName);
+    console.log(cityName);
+    // convert object to JSON string
+    const jsonCityArr = JSON.stringify(searchHistory);
+    // save to local storage
+    localStorage.setItem("city", jsonCityArr);
+    searchedBtn.text(cityName);
+    getWeather(cityName);
+});
 
 function getWeather(cityName) {
         var request5Day = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=imperial&appid=deb2d4595b0266d3dd7a3a63088c406d`;
@@ -53,27 +51,27 @@ function getWeather(cityName) {
                 // extract lat/long coordinates from data
                 cityLat = data.city.coord.lat;
                 cityLon = data.city.coord.lon;
-                console.log(cityLat);
-                console.log(typeof cityLat);
-                console.log(cityLon);
+                // console.log(cityLat);
+                // console.log(typeof cityLat);
+                // console.log(cityLon);
 
                 // city name in header
                 var cityHeader = $("#city");
                 var cityDataName = data.city.name;
-                console.log(cityDataName);
-                console.log(typeof cityDataName);
+                // console.log(cityDataName);
+                // console.log(typeof cityDataName);
                 cityHeader.text(cityDataName);
 
                 
                 // need to generate html dynamically in for loop and put in data
                 for (i = 5; i < data.list.length; i+=8) {
                     var day = moment(data.list[i].dt_txt).format('ddd, M/D/YYYY');
+                    console.log(day);
                     var temp5 = data.list[i].main.temp; //instead of temp5, grab html element it is going into!!!!
                     var wind5 = data.list[i].wind.speed;
                     var humidity5 = data.list[i].main.humidity;
                     var iconURL = "http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png"
-                    console.log(day);
-                    console.log(iconURL);
+
                     // variables for all elements in the card for 5 day forecast
                     var forecastCards = $("<div class = 'card forecastCards'>");
                     var img = $("<img class = 'card-img-top' alt='5 day forecast icon'/>");
@@ -103,6 +101,7 @@ function getWeather(cityName) {
             })
             // create URL for one call with lat and long
             function currentWeather(cityLat, cityLon) {
+                    console.log(cityLat);
                     var requestWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&units=imperial&exclude=minutely,hourly,daily,alerts&appid=deb2d4595b0266d3dd7a3a63088c406d`;
                     console.log(requestWeather); 
 
@@ -111,7 +110,10 @@ function getWeather(cityName) {
                 
                 .then (function (response){
                     console.log(response);
-                    if (response.status === 200) {
+                    if (response.status !== 200) {
+                        console.log(response.status)
+                        return 
+                    } else {
                         return response.json();
                     }
                 })
@@ -123,11 +125,13 @@ function getWeather(cityName) {
                     var currentHumidity = data.current.humidity;
                     var currentUvIndex = data.current.uvi;
                     var currentDate = data.current.dt;
+                    console.log(currentDate);
                     var iconURL = "http://openweathermap.org/img/w/" + data.current.weather[0].icon + ".png"
                     console.log(currentTemp);
 
                     // grab all html elements
-                    var todaysDate = moment(currentDate).format(' ' + '(ddd, M/D/YYYY)');
+                    var todaysDate = moment().format(' ' + '(ddd, M/D/YYYY)');
+                    console.log(todaysDate);
                     var temp = $(".temp");
                     var wind = $(".wind");
                     var humidity = $(".humidity");
@@ -155,7 +159,6 @@ function getWeather(cityName) {
                     } else {
                         uv.css({"background-color": "red", "color": "white", "padding":"8px", "border-radius":"8px"})
                     }
-
                 })
             }
 
@@ -192,8 +195,6 @@ function getHistory() {
                 getWeather(prevCity);
             
             })
-
         }
-
     }
 }
